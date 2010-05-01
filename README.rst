@@ -16,14 +16,14 @@ Documentation
 The `wow` package consists of the following modules
 
 - the wow.fetch module provides a wrapper function for Blizzard's armory (which is all xml entirely)
-- the wow.api module provides an clean and object oriented interface on top of those services
+- the wow.api module provides a clean and object oriented interface on top of those services
 - the wow.translation module provides some tools to translate some machine information into human readable format, like item ids or dungeon shortnames
 
 Fetching XML data
 +++++++++++++++++
 
 The `wow.fetch` module provides very basic and low level access to Blizzard's xml files. For more complex use cases it is recomended to use the object oriented module `wow.api`.
-Note: All functions in the `wow.fetch` module return XML data as ElementTree objects. This module is highly inspired by Christian Kreutzer's `python-tvrage`_ project which provieds a similar `feeds`-module.
+Note: All functions in the `wow.fetch` module return XML data as ElementTree objects. This module is highly inspired by Christian Kreutzer's `python-tvrage`_ project which provides a similar `feeds`-module.
 
 .. _python-tvrage: http://pypi.python.org/pypi/python-tvrage
 
