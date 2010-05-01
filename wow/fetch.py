@@ -34,7 +34,10 @@ except ImportError:
     
 REGION = 'eu'
 BASE_URL = 'http://%s.wowarmory.com/search.xml' % (REGION)
-QUERY_STRING = 'fl[source]=dungeon&fl[dungeon]=%s&fl[boss]=%s&fl[difficulty]=%s&fl[type]=all&fl[usbleBy]=all&fl[rqrMin]=&fl[rqrMax]=&fl[rrt]=all&advOptName=none&fl[andor]=and&searchType=items&fl[advOpt]=none'
+BASE_DATA_URL = 'http://%s.wowarmory.com/_data/dungeons.xml' % (REGION)
+BASE_LOC_URL = 'http://%s.wowarmory.com/data/dungeonStrings.xml' % (REGION)
+QUERY_STRING_ITEM = 'searchQuery=%s&fl[source]=all&fl[type]=all&fl[usbleBy]=all&fl[rqrMin]=&fl[rqrMax]=&fl[rrt]=all&advOptName=none&fl[andor]=and&searchType=items&fl[advOpt]=none'
+QUERY_STRING_RAID = 'fl[source]=dungeon&fl[dungeon]=%s&fl[boss]=%s&fl[difficulty]=%s&fl[type]=all&fl[usbleBy]=all&fl[rqrMin]=&fl[rqrMax]=&fl[rrt]=all&advOptName=none&fl[andor]=and&searchType=items&fl[advOpt]=none'
 HEADER = {
     'User-Agent': 'Mozilla/5.0 (Windows; U; Windows NT 6.1; de; rv:1.9.2) Gecko/20100115 Firefox/3.6',
     'Accept-Language': 'de-de,de;q=0.8,en-us;q=0.5,en;q=0.3'
@@ -61,14 +64,29 @@ def _fetch(url, node=None):
         if not node:
             retval = root
         else:
-            # change: also search in all subelements
-            retval = root.find('.//%s' % (node)) 
+            retval = root.find(node) 
     return retval
     
-def raid_loot(dungeon, boss = 'all', difficulty='normal', node=None):
+def raid_loot(dungeon, boss = 'all', difficulty='normal', lang='de-de', node=None):
     """fetches all items which are dropped in a certain dungion by a certain
     boss on a certain difficulty mode. If the boss value is omitted, all
     possible bosses are used. If difficulty is omitted, the normal difficulty
     mode is used."""
-    request = Request(BASE_URL, QUERY_STRING % (dungeon, boss, difficulty), HEADER)
+    HEADER['Accept-Language'] = lang
+    request = Request(BASE_URL, QUERY_STRING_RAID % (dungeon, boss, difficulty), HEADER)
+    return _fetch(request, node)
+    
+def search_item(name, lang='de-de', node=None):
+    HEADER['Accept-Language'] = lang
+    request = Request(BASE_URL, QUERY_STRING_ITEM % (name), HEADER)
+    return _fetch(request, node)
+
+def load_dungeons(lang='de-de', node=None):
+    HEADER['Accept-Language'] = lang
+    request = Request(BASE_DATA_URL, '', HEADER)
+    return _fetch(request, node)
+    
+def load_translations(lang='de-de', node=None):
+    HEADER['Accept-Language'] = lang
+    request = Request(BASE_LOC_URL, '', HEADER)
     return _fetch(request, node)
