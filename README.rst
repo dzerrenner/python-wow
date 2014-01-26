@@ -5,6 +5,12 @@ python-wow is a pythonic client library for fetching and using Blizzard's `World
 
 .. _World of Warcraft Arsenal: http://www.wowarmory.com/
 
+Project state
+-------------
+
+This project is discontinued. Feel free to use the existing cod in your own projects.
+
+
 Installation
 ------------
 
